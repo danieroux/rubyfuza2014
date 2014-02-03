@@ -1,6 +1,6 @@
 /* From http://designindevelopment.com/css/css3-chess-board */
 
-a {
+table.chess_board a {
 	color:#000;
 	display:block;
 	font-size:60px;
@@ -10,8 +10,9 @@ a {
 	text-shadow:0 1px #fff;
 	width:80px;
 }
-#chess_board { border:5px solid #333; }
-#chess_board td {
+
+table.chess_board { border:5px solid #333; }
+.chess_board td {
 	background:#fff;
 	background:-moz-linear-gradient(top, #fff, #eee);
 	background:-webkit-gradient(linear,0 0, 0 100%, from(#fff), to(#eee));
@@ -23,8 +24,8 @@ a {
 	vertical-align:middle;
 	width:80px;
 }
-#chess_board tr:nth-child(odd) td:nth-child(even),
-#chess_board tr:nth-child(even) td:nth-child(odd) {
+table.chess_board tr:nth-child(odd) td:nth-child(even),
+table.chess_board tr:nth-child(even) td:nth-child(odd) {
 	background:#ccc;
 	background:-moz-linear-gradient(top, #ccc, #eee);
 	background:-webkit-gradient(linear,0 0, 0 100%, from(#ccc), to(#eee));
