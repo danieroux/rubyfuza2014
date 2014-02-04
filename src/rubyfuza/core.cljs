@@ -82,6 +82,19 @@
 (defn move! [from-square to-square]
   (swap! app-state update-in [:board] move from-square to-square))
 
+(def app-history
+  (atom [@app-state]))
+
+(add-watch app-state :history
+  (fn [_ _ _ n]
+    (when-not (= (last @app-history) n)
+      (swap! app-history conj n))))
+
+(defn undo-move []
+  (when (> (count @app-history) 1)
+    (swap! app-history pop)
+    (reset! app-state (last @app-history))))
+
 (def the-world (chan))
 
 (defn assimilate-novelty [world-channel]
