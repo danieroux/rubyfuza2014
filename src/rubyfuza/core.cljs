@@ -1,6 +1,8 @@
 (ns rubyfuza.core
+  (:require-macros [cljs.core.async.macros :refer [go alt!]])
   (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
+            [om.dom :as dom :include-macros true]
+            [cljs.core.async :as async :refer [put! chan <! >!]]))
 
 (enable-console-print!)
 
@@ -51,21 +53,16 @@
    "g" 6
    "h" 7})
 
-(defn index-from [position]
-  (let [row (get col-map (first position))
-        parsed-column (js/parseInt (last position))
-        column (- 8 parsed-column)]
-    [column row]))
+(defn coords-from [square]
+  (let [column (get col-map (first square))
+        parsed-row (js/parseInt (last square))
+        row (- 8 parsed-row)]
+    [row column]))
 
-(defn value-at [board position]
-  (let [[row column](index-from position)
-        the-row (nth board row)]
-    (nth the-row row)))
-
-(defn move [board from to]
-  (let [from-piece (value-at board from)
-        from-coords (index-from from)
-        to-coords (index-from to)]
+(defn move [board from-square to-square]
+  (let [from-coords (coords-from from-square)
+        to-coords (coords-from to-square)
+        from-piece (get-in board from-coords)]
     (-> board
         (assoc-in to-coords from-piece)
         (assoc-in from-coords ""))))
@@ -81,3 +78,20 @@
   (fn [app owner]
     (om/build board (:board app)))
   (. js/document (getElementById "app")))
+
+(defn move! [from-square to-square]
+  (swap! app-state update-in [:board] move from-square to-square))
+
+(def the-world (chan))
+
+(defn assimilate-novelty [world-channel]
+  (go (while true
+        (if-let [[from-square to-square] (<! world-channel)]
+          (move! from-square to-square)))))
+
+(defn fake-server-move [world-channel a-move]
+  (put! world-channel a-move))
+
+(assimilate-novelty the-world)
+
+;(fake-server-move the-world ["a8" "c8"])
