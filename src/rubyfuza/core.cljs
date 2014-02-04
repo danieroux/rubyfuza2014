@@ -32,17 +32,6 @@
 
 (def app-state (atom {:board starting-board}))
 
-(defn unicode-pieces [board]
-  (for [row board]
-    (map #(get pieces % "") row)))
-
-(defn draw-square [square]
-  (dom/td nil (dom/a #js {:href "#"} square)))
-
-(defn draw-row [row]
-  (apply dom/tr nil
-         (map draw-square row)))
-
 (def col-map
   {"a" 0
    "b" 1
@@ -66,6 +55,17 @@
     (-> board
         (assoc-in to-coords from-piece)
         (assoc-in from-coords ""))))
+
+(defn draw-square [square]
+  (dom/td nil (dom/a #js {:href "#"} square)))
+
+(defn draw-row [row]
+  (apply dom/tr nil
+         (map draw-square row)))
+
+(defn unicode-pieces [board]
+  (for [row board]
+    (map #(get pieces % "") row)))
 
 (defn board [board owner]
   (om/component
