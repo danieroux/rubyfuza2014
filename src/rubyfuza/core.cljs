@@ -19,7 +19,7 @@
    "WP" "♙"})
 
 (def starting-board
-  [["BR", "BK", "BB", "BG", "BQ", "BB", "BK", "BR"]
+  [["BR", "BK", "BB", "BG", "BQ", "BB", "BK", "BR"] ;; A8 - H8
    ["BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"]
    [""  , ""  , ""  , ""  , ""  , ""  , ""  ,  ""]
    [""  , ""  , ""  , ""  , ""  , ""  , ""  ,  ""]
@@ -40,6 +40,35 @@
 (defn draw-row [row]
   (apply dom/tr nil
          (map draw-square row)))
+
+(def col-map
+  {"a" 0
+   "b" 1
+   "c" 2
+   "d" 3
+   "e" 4
+   "f" 5
+   "g" 6
+   "h" 7})
+
+(defn index-from [position]
+  (let [row (get col-map (first position))
+        parsed-column (js/parseInt (last position))
+        column (- 8 parsed-column)]
+    [column row]))
+
+(defn value-at [board position]
+  (let [[row column](index-from position)
+        the-row (nth board row)]
+    (nth the-row row)))
+
+(defn move [board from to]
+  (let [from-piece (value-at board from)
+        from-coords (index-from from)
+        to-coords (index-from to)]
+    (-> board
+        (assoc-in to-coords from-piece)
+        (assoc-in from-coords ""))))
 
 (defn board [board owner]
   (om/component
