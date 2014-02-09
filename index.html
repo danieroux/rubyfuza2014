@@ -3,8 +3,12 @@
     <link rel="stylesheet" type="text/css" href="rubyfuza.css" media="screen" />
   </head>
   <body>
+    <!-- For LightTable (http://www.lighttable.com) integration -->
+    <!-- Copied and pasted from https://github.com/swannodette/om/wiki/Tutorial :
+         Type the key chord Control-SPACE to open up the command list. Start typing Add Connection, press enter to select it. In the list of options select Browser (External). -->
+    <script type='text/javascript' id='lt_ws' src='http://localhost:60158/socket.io/lighttable/ws.js'></script>
+
     <div id="app"></div>
-    <script type='text/javascript' id='lt_ws' src='http://localhost:55691/socket.io/lighttable/ws.js'></script>
     <script src="react-0.8.0.js"></script>
     <script src="out/goog/base.js" type="text/javascript"></script>
     <script src="rubyfuza.js" type="text/javascript"></script>

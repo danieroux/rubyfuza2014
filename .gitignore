@@ -6,5 +6,5 @@ pom.xml
 /target/
 .lein-deps-sum
 .lein-repl-history
-.lein-plugins/
 rubyfuza.js
+.lein-plugins/
